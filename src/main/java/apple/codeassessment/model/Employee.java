@@ -1,8 +1,8 @@
 package apple.codeassessment.model;
 
-import javax.persistence.Entity;
+//import javax.persistence.Entity;
 
-@Entity
+//@Entity
 public class Employee {
 	private int id;
 	private String firstname;
