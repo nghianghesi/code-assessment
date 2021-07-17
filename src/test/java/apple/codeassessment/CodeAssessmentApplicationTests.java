@@ -32,12 +32,13 @@ class CodeAssessmentApplicationTests {
 	
 		
 		with().contentType(ContentType.JSON)
-				.body("{\"firstname\":\"test\", \"lastname\":\"test\"}").
+				.body("{\"firstname\":\"test\", \"lastname\":\"test\", \"salary\":\"50\"}").
 		when().post("/employee")
 	    .then().statusCode(200)
 	        .assertThat().body("id", equalTo(1))
 	        .body("firstname", equalTo("test"))
-	        .body("lastname", equalTo("test"));
+	        .body("lastname", equalTo("test"))
+	        .body("salary", equalTo(50));
 		
 		given().get("/employee/1")
 	    .then().statusCode(200)
@@ -46,15 +47,16 @@ class CodeAssessmentApplicationTests {
 	        .body("lastname", equalTo("test"));		
 		
 		with().contentType(ContentType.JSON)
-				.body("{\"id\": \"1\", \"firstname\":\"test1\", \"lastname\":\"test1\"}").
+				.body("{\"id\": \"1\", \"firstname\":\"test1\", \"lastname\":\"test1\", \"salary\":\"75\"}").
 		when().put("/employee")
 	    .then().statusCode(200)
 	        .assertThat().body("id", equalTo(1))
 	        .body("firstname", equalTo("test1"))
-	        .body("lastname", equalTo("test1"));
+	        .body("lastname", equalTo("test1"))
+	        .body("salary", equalTo(75));
 		
 		with().contentType(ContentType.JSON)
-				.body("{\"id\": \"2\", \"firstname\":\"test1\", \"lastname\":\"test1\"}").
+				.body("{\"id\": \"2\", \"firstname\":\"test2\", \"lastname\":\"test21\", \"salary\":\"75\"}").
 		when().put("/employee")
 	    .then().statusCode(404);
 
