@@ -19,14 +19,15 @@ public class MemoryStorageEmployeeRepo implements apple.codeassessment.di.repo.E
 	public Employee addOrUpdateEmployee(Employee e){
 		if (e.getId() > 0) {
 			if(dataSrc.containsKey(e.getId())) {
-				return 	dataSrc.put(e.getId(), e);
+				dataSrc.put(e.getId(), e);
 			}else {
 				return null;
 			}
 		}else {
 			e.setId(this.nextId.incrementAndGet());
-			return dataSrc.put(e.getId(), e);
+			dataSrc.put(e.getId(), e);
 		}
+		return e;
 	}
 
 	@Override

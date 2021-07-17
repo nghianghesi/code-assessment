@@ -3,6 +3,7 @@ package apple.codeassessment.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 import apple.codeassessment.di.service.EmployeeService;
 import apple.codeassessment.exception.EmployeeNotFoundException;
@@ -14,32 +15,22 @@ public class EmployeeController {
 
 	@Autowired
 	EmployeeService employeeService;
-
-	private apple.codeassessment.dto.Employee toDTO(Employee e) {
-		return new apple.codeassessment.dto.Employee(e.getId(), e.getFirstname(), e.getLastname());
-	}
-
-	private Employee fromDTO(apple.codeassessment.dto.Employee e) {
-		return new Employee(e.getId(), e.getFirstname(), e.getLastname());
-	}
-
 	@GetMapping(path = "/{id}")
 	public apple.codeassessment.dto.Employee getEmployeeById(@PathVariable int id) throws EmployeeNotFoundException {
-		return toDTO(this.employeeService.getEmployeeById(id));
+		return apple.codeassessment.dto.Employee.fromModel(this.employeeService.getEmployeeById(id));
 	}
 
 	@PutMapping
 	public apple.codeassessment.dto.Employee updateEmployee(@RequestBody apple.codeassessment.dto.Employee e)
 			throws EmployeeNotFoundException {
-		Employee updatedEmployee = this.employeeService.addOrUpdateEmployee(fromDTO(e));
-		return toDTO(updatedEmployee);
+		Employee updatedEmployee = this.employeeService.addOrUpdateEmployee(e.toModel());
+		return apple.codeassessment.dto.Employee.fromModel(updatedEmployee);
 	}
 
-	@PostMapping
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public apple.codeassessment.dto.Employee insertEmployee(@RequestBody apple.codeassessment.dto.Employee e) {
-		e.setId(-1);
-		Employee updatedEmployee = this.employeeService.addOrUpdateEmployee(fromDTO(e));
-		return toDTO(updatedEmployee);
+		Employee updatedEmployee = this.employeeService.addOrUpdateEmployee(e.toInsertedModel());
+		return apple.codeassessment.dto.Employee.fromModel(updatedEmployee);
 	}
 
 	@DeleteMapping(path = "/{id}")
